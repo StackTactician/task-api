@@ -3,11 +3,11 @@ from fastapi import HTTPException, FastAPI
 
 app= FastAPI()
 
-@app.get("/")
+@app.get("/", summary="General API info.")
 def root():
     return {"name": "Task API", "version": "1.0", "endpoints": ["/tasks"]}
 
-@app.get("/health")
+@app.get("/health",  summary="Health check.")
 def health():
     return {"status": "ok"}
 
@@ -30,18 +30,18 @@ tasks = [
     ]
 
 
-@app.get("/tasks")
+@app.get("/tasks", summary="List all tasks.")
 def get_tasks():
     return tasks
 
-@app.get("/tasks/{id}")
+@app.get("/tasks/{id}", summary="Show a single task.")
 def show_task(id: int):
     for task in tasks:
         if task.id == id:
             return task
     raise HTTPException(status_code=404, detail=f"Task {id} not found")
 
-@app.post("/tasks", status_code=201)
+@app.post("/tasks", status_code=201, summary="Add a new task.")
 def create_task(new_task: TaskCreate):
     if new_task.title == "" or new_task.title is None:
         raise HTTPException(status_code=400, detail="Invalid Task.")
@@ -50,7 +50,7 @@ def create_task(new_task: TaskCreate):
     tasks.append(created_task)
     return created_task
 
-@app.put("/tasks/{id}")
+@app.put("/tasks/{id}", summary="Update a task.")
 def update_task(id: int, updated_task: TaskUpdate):
     if updated_task.title == "" or updated_task.title is None:
         raise HTTPException(status_code=400, detail="Invalid Update.")
@@ -61,7 +61,7 @@ def update_task(id: int, updated_task: TaskUpdate):
             return task
     raise HTTPException(status_code=404, detail="Task not found.")
 
-@app.delete("/tasks/{id}", status_code=204)
+@app.delete("/tasks/{id}", status_code=204, summary="Delete a task.")
 def delete_task(id: int):
     for task in tasks:
         if task.id == id:
