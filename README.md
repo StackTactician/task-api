@@ -41,3 +41,7 @@ content-length: 40
 content-type: application/json
 
 {"id":4,"title":"Buy milk","done":false}
+
+## Swagger UI
+
+![Swagger UI](swagger_docs.png)
